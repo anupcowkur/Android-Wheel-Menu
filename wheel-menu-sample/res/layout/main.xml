@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:background="#FFCCCCCC">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:text="|"
+        android:layout_gravity="center"/>
+
+    <ImageView
+        android:src="@drawable/wheel"
+        android:id="@+id/wheel"
+        android:scaleType="matrix"
+        android:layout_height="300dp"
+        android:layout_width="300dp"></ImageView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:text="show selected"
+        android:id="@+id/show_selected_button"
+        android:layout_gravity="center"/>
+</LinearLayout>
