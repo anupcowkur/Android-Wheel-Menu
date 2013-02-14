@@ -63,9 +63,6 @@ This flag is set to true by default. If true, crossing into a division will caus
 
 Check out the [source](https://github.com/anupcowkur/Android-Wheel-Menu) and the [sample application](https://github.com/anupcowkur/Android-Wheel-Menu/tree/master/wheel-menu-sample) on Github to learn more!
 
-# Authors and Contributors
-Created by @anupcowkur
-
 # Contributing
   Contributions welcome via Github pull requests.
  
