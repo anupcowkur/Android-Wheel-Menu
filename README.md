@@ -18,6 +18,7 @@ new WheelMenu(Context, no_of_divisions_in_your_menu,
 ```
 
 **ex: A menu with 12 divisions** 
+
 ![-- Sorry, Image unavailable :-(  ](http://i.imgur.com/1k65UUv.png)
 
 
@@ -61,7 +62,7 @@ In our example, it will return values from 1 to 12 depending on the user's selec
 
 This flag is set to true by default. If true, crossing into a division will cause the wheel to auto-align itself to the center of the division. Otherwise, the wheel will just hang around wherever the user left it. 
 
-Check out the [source](https://github.com/anupcowkur/Android-Wheel-Menu) and the [sample application](https://github.com/anupcowkur/Android-Wheel-Menu/tree/master/wheel-menu-sample) on Github to learn more!
+Check out the [sample application](https://github.com/anupcowkur/Android-Wheel-Menu/tree/master/wheel-menu-sample) to see it in action!
 
 # Contributing
   Contributions welcome via Github pull requests.
