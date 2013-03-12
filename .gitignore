@@ -1,4 +1,4 @@
-lt application files
+#application files
 *.apk
 *.ap_
 
@@ -30,3 +30,6 @@ proguard/
 build.xml
 ant.properties
 out/
+
+# Mac system files
+.DS_Store
