@@ -14,6 +14,8 @@ gen/
 
 # Local configuration file (sdk path, etc)
 local.properties
+build.xml
+ant.properties
 
 # Eclipse project files
 .classpath
@@ -27,8 +29,6 @@ proguard/
 *.ipr
 *.iws
 .idea/
-build.xml
-ant.properties
 out/
 
 # Mac system files
