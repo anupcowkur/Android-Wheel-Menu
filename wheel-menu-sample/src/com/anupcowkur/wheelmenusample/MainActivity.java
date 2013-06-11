@@ -1,4 +1,4 @@
-package com.anupcowkur.wheel_menu_sample;
+package com.anupcowkur.wheelmenusample;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-import com.anupcowkur.wheel_menu.WheelMenu;
+import com.anupcowkur.wheelmenu.WheelMenu;
 
 public class MainActivity extends Activity {
 

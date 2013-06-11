@@ -1,4 +1,4 @@
-package com.anupcowkur.wheel_menu;
+package com.anupcowkur.wheelmenu;
 
 import android.content.Context;
 import android.graphics.Bitmap;

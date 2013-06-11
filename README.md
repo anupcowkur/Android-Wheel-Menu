@@ -4,9 +4,9 @@ This is a simple android library to make a circular menu UI. Just specify a coup
 
 # Usage
 
-First [download the jar](https://www.dropbox.com/s/npmfmwzgupqsjlf/wheel-menu.jar) and add it to your project. The exact location to include the jar will depend on your specific IDE.
+First [download the jar](https://www.dropbox.com/s/vwftt66loxugq13/wheelmenu.jar) and add it to your project. The exact location to include the jar will depend on your specific IDE.
 
-Import the package ```com.anupcowkur.wheel_menu``` into the activity in which you want to include the menu.
+Import the package ```com.anupcowkur.wheelmenu``` into the activity in which you want to include the menu.
 
 Initialize the menu with the constructor in the format:
 
