@@ -4,52 +4,35 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
-public class WheelMenu {
+public class WheelMenu extends ImageView {
 
-    private Bitmap imageOriginal, imageScaled;     //variables for original and resized image
-    private Context context;                       //variable to store the context of the calling activity
+    private Bitmap imageOriginal, imageScaled;     //variables for original and re-sized image
     private Matrix matrix;                         //Matrix used to perform rotations
-    private ImageView wheel;                       //image view which holds the wheel
-    private int wheelHeight, wheelWidth;           //height and width of the image view containing the wheel
+    private int wheelHeight, wheelWidth;           //height and width of the view
     private int top;                               //the current top of the wheel
-    private double total_rotation;                 //variable that counts the total rotation during a given rotation of the wheel by the user (from ACTION_DOWN to ACTION_UP)
-    private int divcount;                          //variable that counts the no of divisons in the wheel
-    private int divangle;                          //variable that holds the angle of each division
-    private int selected;                          //the currently selected option by the user
-    private boolean snapFlag = true;               //variable that determines whether to snap the wheel to the center of a div or not
+    private double totalRotation;                  //variable that counts the total rotation during a given rotation of the wheel by the user (from ACTION_DOWN to ACTION_UP)
+    private int divCount;                          //no of divisions in the wheel
+    private int divAngle;                          //angle of each division
+    private int selectedPosition;                  //the section currently selected by the user.
+    private boolean snapToCenterFlag = true;       //variable that determines whether to snap the wheel to the center of a div or not
+    private Context context;
+    private WheelChangeListener wheelChangeListener;
 
-
-    //public method to be used to retrieve the currently selected position
-    public int getSelected() {
-
-        return selected;
+    public WheelMenu(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
     }
 
+    //initializations
+    private void init(Context context) {
+        this.context = context;
+        selectedPosition = 1;
 
-    /* constructor form:
-    *  WheelMenu(Context, no_of_divisions_in_the_menu, drawable_to_use_as_wheel_img, imageview_for_the_wheel, flag_to_set_snap_to_center_option)
-    */
-    public WheelMenu(Context context_par, int divcount_par, int drawable_id, ImageView wheel_par, boolean snapFlag_par) {
-
-        //initializations
-        selected = 1;
-        divcount = divcount_par;
-        context = context_par;
-        snapFlag = snapFlag_par;
-        wheel = wheel_par;
-        top = 0;
-        divangle = 360 / divcount;
-        total_rotation = -1 * (divangle / 2);
-
-        // load the image only once
-        if (imageOriginal == null) {
-            imageOriginal = BitmapFactory.decodeResource(context.getResources(), drawable_id);
-        }
         // initialize the matrix only once
         if (matrix == null) {
             matrix = new Matrix();
@@ -58,41 +41,146 @@ public class WheelMenu {
         }
 
         //touch events listener
-        wheel.setOnTouchListener(new WheelTouchListener());
-
-
-        /* listener to find out when layout is initialized. We need this to get the dimensions of the image view.
-        *  Once we get those, We can scale the image to make sure it's proper, Initialize the matrix and align it with the image view's center.
-        */
-        wheel.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                // method called multiple times but we can initialize just once
-                if (wheelHeight == 0 || wheelWidth == 0) {
-                    wheelHeight = wheel.getHeight();
-                    wheelWidth = wheel.getWidth();
-                    // resize the image
-                    Matrix resize = new Matrix();
-                    resize.postScale((float) Math.min(wheelWidth, wheelHeight) / (float) imageOriginal.getWidth(), (float) Math.min(wheelWidth, wheelHeight) / (float) imageOriginal.getHeight());
-                    imageScaled = Bitmap.createBitmap(imageOriginal, 0, 0, imageOriginal.getWidth(), imageOriginal.getHeight(), resize, false);
-                    // translate the matrix to the image view's center
-                    float translateX = wheelWidth / 2 - imageScaled.getWidth() / 2;
-                    float translateY = wheelHeight / 2 - imageScaled.getHeight() / 2;
-                    matrix.postTranslate(translateX, translateY);
-                    wheel.setImageBitmap(imageScaled);
-                    wheel.setImageMatrix(matrix);
-                }
-            }
-        });
-
+        this.setOnTouchListener(new WheelTouchListener());
 
     }
 
+    /**
+     * Add a new listener to observe user selection changes.
+     *
+     * @param wheelChangeListener
+     */
+    public void setWheelChangeListener(WheelChangeListener wheelChangeListener) {
+        this.wheelChangeListener = wheelChangeListener;
+    }
+
+    /**
+     * Returns the position currently selected by the user.
+     *
+     * @return the currently selected position between 1 and divCount.
+     */
+    public int getSelectedPosition() {
+        return selectedPosition;
+    }
+
+    /**
+     * Set no of divisions in the wheel menu.
+     *
+     * @param divCount no of divisions.
+     */
+    public void setDivCount(int divCount) {
+        this.divCount = divCount;
+
+        divAngle = 360 / divCount;
+        totalRotation = -1 * (divAngle / 2);
+    }
+
+    /**
+     * Set the snap to center flag. If true, wheel will always snap to center of current section.
+     *
+     * @param snapToCenterFlag
+     */
+    public void setSnapToCenterFlag(boolean snapToCenterFlag) {
+        this.snapToCenterFlag = snapToCenterFlag;
+    }
+
+    /**
+     * Set the wheel image.
+     *
+     * @param drawableId the id of the drawable to be used as the wheel image.
+     */
+    public void setWheelImage(int drawableId) {
+        imageOriginal = BitmapFactory.decodeResource(context.getResources(), drawableId);
+    }
+
+    /*
+     * We need this to get the dimensions of the view. Once we get those, We can scale the image to make sure it's proper,
+     * Initialize the matrix and align it with the views center.
+     */
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        // method called multiple times but we can initialize just once
+        if (wheelHeight == 0 || wheelWidth == 0) {
+            wheelHeight = h;
+            wheelWidth = w;
+            // resize the image
+            Matrix resize = new Matrix();
+            resize.postScale((float) Math.min(wheelWidth, wheelHeight) / (float) imageOriginal.getWidth(), (float) Math.min(wheelWidth, wheelHeight) / (float) imageOriginal.getHeight());
+            imageScaled = Bitmap.createBitmap(imageOriginal, 0, 0, imageOriginal.getWidth(), imageOriginal.getHeight(), resize, false);
+            // translate the matrix to the image view's center
+            float translateX = wheelWidth / 2 - imageScaled.getWidth() / 2;
+            float translateY = wheelHeight / 2 - imageScaled.getHeight() / 2;
+            matrix.postTranslate(translateX, translateY);
+            WheelMenu.this.setImageBitmap(imageScaled);
+            WheelMenu.this.setImageMatrix(matrix);
+        }
+    }
+
+    /**
+     * get the angle of a touch event.
+     */
+    private double getAngle(double x, double y) {
+        x = x - (wheelWidth / 2d);
+        y = wheelHeight - y - (wheelHeight / 2d);
+
+        switch (getQuadrant(x, y)) {
+            case 1:
+                return Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI;
+            case 2:
+                return 180 - Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI;
+            case 3:
+                return 180 + (-1 * Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI);
+            case 4:
+                return 360 + Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI;
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * get the quadrant of the wheel which contains the touch point (x,y)
+     *
+     * @return quadrant 1,2,3 or 4
+     */
+    private static int getQuadrant(double x, double y) {
+        if (x >= 0) {
+            return y >= 0 ? 1 : 4;
+        } else {
+            return y >= 0 ? 2 : 3;
+        }
+    }
+
+    /**
+     * rotate the wheel by the given angle
+     *
+     * @param degrees
+     */
+    private void rotateWheel(float degrees) {
+        matrix.postRotate(degrees, wheelWidth / 2, wheelHeight / 2);
+        WheelMenu.this.setImageMatrix(matrix);
+
+        //add the rotation to the total rotation
+        totalRotation = totalRotation + degrees;
+
+    }
+
+    /**
+     * Interface to to observe user selection changes.
+     */
+    public interface WheelChangeListener {
+        /**
+         * Called when user selects a new position in the wheel menu.
+         *
+         * @param selectedPosition the new position selected.
+         */
+        public void onSelectionChange(int selectedPosition);
+    }
 
     //listener for touch events on the wheel
     private class WheelTouchListener implements View.OnTouchListener {
         private double startAngle;
-
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -118,39 +206,43 @@ public class WheelMenu {
 
                 case MotionEvent.ACTION_UP:
                     //get the total angle rotated in 360 degrees
-                    total_rotation = total_rotation % 360;
+                    totalRotation = totalRotation % 360;
 
                     //represent total rotation in positive value
-                    if (total_rotation < 0) {
-                        total_rotation = 360 + total_rotation;
+                    if (totalRotation < 0) {
+                        totalRotation = 360 + totalRotation;
                     }
 
                     //calculate the no of divs the rotation has crossed
-                    int no_of_divs_crossed = (int) (total_rotation / divangle);
+                    int no_of_divs_crossed = (int) (totalRotation / divAngle);
 
                     //calculate current top
-                    top = (divcount + top - no_of_divs_crossed) % divcount;
+                    top = (divCount + top - no_of_divs_crossed) % divCount;
 
                     //for next rotation, the initial total rotation will be the no of degrees inside the current top
-                    total_rotation = total_rotation % divangle;
+                    totalRotation = totalRotation % divAngle;
 
                     //snapping to the top's center
-                    if (snapFlag) {
+                    if (snapToCenterFlag) {
 
                         //calculate the angle to be rotated to reach the top's center.
-                        double leftover = divangle / 2 - total_rotation;
+                        double leftover = divAngle / 2 - totalRotation;
 
                         rotateWheel((float) (leftover));
 
-                        //re-initiliaze total rotation
-                        total_rotation = divangle / 2;
+                        //re-initialize total rotation
+                        totalRotation = divAngle / 2;
                     }
 
                     //set the currently selected option
                     if (top == 0) {
-                        selected = divcount;
+                        selectedPosition = divCount;
                     } else {
-                        selected = top;
+                        selectedPosition = top;
+                    }
+
+                    if (wheelChangeListener != null) {
+                        wheelChangeListener.onSelectionChange(selectedPosition);
                     }
 
                     break;
@@ -158,46 +250,6 @@ public class WheelMenu {
 
             return true;
         }
-    }
-
-    //get the angle of a touch event
-    private double getAngle(double xTouch, double yTouch) {
-        double x = xTouch - (wheelWidth / 2d);
-        double y = wheelHeight - yTouch - (wheelHeight / 2d);
-
-        switch (getQuadrant(x, y)) {
-            case 1:
-                return Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI;
-            case 2:
-                return 180 - Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI;
-            case 3:
-                return 180 + (-1 * Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI);
-            case 4:
-                return 360 + Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI;
-            default:
-                return 0;
-        }
-    }
-
-    //get the quadrant of the wheel which the user has touched
-    private static int getQuadrant(double x, double y) {
-        if (x >= 0) {
-            return y >= 0 ? 1 : 4;
-        } else {
-            return y >= 0 ? 2 : 3;
-        }
-    }
-
-
-    //rotate the wheel by the given angle
-    private void rotateWheel(float degrees) {
-        matrix.postRotate(degrees, wheelWidth / 2, wheelHeight / 2);
-        wheel.setImageMatrix(matrix);
-
-        //add the rotation to the total rotation
-        total_rotation = total_rotation + degrees;
-
-
     }
 
 }

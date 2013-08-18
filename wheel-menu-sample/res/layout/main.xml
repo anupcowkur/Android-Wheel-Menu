@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#FFCCCCCC"
     android:gravity="center"
-    android:background="#FFCCCCCC">
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
+        android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:text="|"
-        android:layout_gravity="center"/>
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
 
-    <ImageView
-        android:src="@drawable/wheel"
-        android:id="@+id/wheel"
-        android:scaleType="matrix"
+    <com.anupcowkur.wheelmenu.WheelMenu
+        android:id="@+id/wheelMenu"
+        android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_width="300dp"></ImageView>
+        android:scaleType="matrix"
+        android:src="@drawable/wheel" />
 
-    <Button
+    <TextView
+        android:id="@+id/selected_position_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
+        android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:text="show selected"
-        android:id="@+id/show_selected_button"
-        android:layout_gravity="center"/>
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
 </LinearLayout>
