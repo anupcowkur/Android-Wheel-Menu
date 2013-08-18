@@ -2,7 +2,7 @@
 
 This is a simple android library to make a circular menu UI. Just specify a couple of params and it's ready to use!
 
-![-- Sorry, Image unavailable :-(  ](http://imgur.com/Pzjry3q)
+[Imgur](http://i.imgur.com/Pzjry3q.gif?1)
 
 # Usage
 
