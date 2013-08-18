@@ -2,7 +2,7 @@
 
 This is a simple android library to make a circular menu UI. Just specify a couple of params and it's ready to use!
 
-[Example Image](https://github.com/anupcowkur/Android-Wheel-Menu/tree/master/graphics/wheel.gif)
+![Example Image](https://github.com/anupcowkur/Android-Wheel-Menu/tree/master/graphics/wheel.gif)
 
 # Usage
 
