@@ -30,7 +30,7 @@ WheelMenu wm = new WheelMenu(MainActivity.this,
                              wheel_image, true);
 ```
 
-wheel_image is the id of the image view
+wheel_image is a reference to the image view
 
 ```
 ImageView wheel_image = (ImageView) findViewById(R.id.wheel);
