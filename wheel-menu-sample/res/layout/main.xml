@@ -18,9 +18,7 @@
     <com.anupcowkur.wheelmenu.WheelMenu
         android:id="@+id/wheelMenu"
         android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:scaleType="matrix"
-        android:src="@drawable/wheel" />
+        android:layout_height="300dp" />
 
     <TextView
         android:id="@+id/selected_position_text"

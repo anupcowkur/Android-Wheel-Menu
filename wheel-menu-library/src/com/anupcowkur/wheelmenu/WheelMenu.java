@@ -31,6 +31,7 @@ public class WheelMenu extends ImageView {
     //initializations
     private void init(Context context) {
         this.context = context;
+        this.setScaleType(ScaleType.MATRIX);
         selectedPosition = 1;
 
         // initialize the matrix only once
