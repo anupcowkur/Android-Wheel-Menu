@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ public class WheelMenu extends ImageView {
     private int divAngle;                          //angle of each division
     private int selectedPosition;                  //the section currently selected by the user.
     private boolean snapToCenterFlag = true;       //variable that determines whether to snap the wheel to the center of a div or not
+    private int angleOffset;					   //how offset from the top the position of "selected" is
     private Context context;
     private WheelChangeListener wheelChangeListener;
 
@@ -43,7 +45,6 @@ public class WheelMenu extends ImageView {
 
         //touch events listener
         this.setOnTouchListener(new WheelTouchListener());
-
     }
 
     /**
@@ -84,6 +85,16 @@ public class WheelMenu extends ImageView {
     public void setSnapToCenterFlag(boolean snapToCenterFlag) {
         this.snapToCenterFlag = snapToCenterFlag;
     }
+    
+    /**
+     * Set how offset from the center the position of the selected div is.
+     * 
+     * @param angleOffset
+     */
+    public void setAngleOffset(int angleOffset){
+    	this.angleOffset = angleOffset;
+    	top += Math.floor(angleOffset / divAngle);
+    }
 
     /**
      * Set the wheel image.
@@ -102,13 +113,13 @@ public class WheelMenu extends ImageView {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        // method called multiple times but we can initialize just once
+        // method called multiple times but initialized just once
         if (wheelHeight == 0 || wheelWidth == 0) {
             wheelHeight = h;
             wheelWidth = w;
             // resize the image
             Matrix resize = new Matrix();
-            resize.postScale((float) Math.min(wheelWidth, wheelHeight) / (float) imageOriginal.getWidth(), (float) Math.min(wheelWidth, wheelHeight) / (float) imageOriginal.getHeight());
+            resize.postScale((float) Math.min(w, h) / (float) imageOriginal.getWidth(), (float) Math.min(wheelWidth, wheelHeight) / (float) imageOriginal.getHeight());
             imageScaled = Bitmap.createBitmap(imageOriginal, 0, 0, imageOriginal.getWidth(), imageOriginal.getHeight(), resize, false);
             // translate the matrix to the image view's center
             float translateX = wheelWidth / 2 - imageScaled.getWidth() / 2;
@@ -164,7 +175,6 @@ public class WheelMenu extends ImageView {
 
         //add the rotation to the total rotation
         totalRotation = totalRotation + degrees;
-
     }
 
     /**
@@ -215,8 +225,9 @@ public class WheelMenu extends ImageView {
                     }
 
                     //calculate the no of divs the rotation has crossed
-                    int no_of_divs_crossed = (int) (totalRotation / divAngle);
-
+                    int no_of_divs_crossed = (int) ((totalRotation) / divAngle);
+                    
+                    
                     //calculate current top
                     top = (divCount + top - no_of_divs_crossed) % divCount;
 
