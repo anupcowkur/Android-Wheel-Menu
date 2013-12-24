@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,7 +14,7 @@ public class WheelMenu extends ImageView {
     private Bitmap imageOriginal, imageScaled;     //variables for original and re-sized image
     private Matrix matrix;                         //Matrix used to perform rotations
     private int wheelHeight, wheelWidth;           //height and width of the view
-    private int top;                               //the current top of the wheel
+    private int top;                               //the current top of the wheel (calculated in wheel divs)
     private double totalRotation;                  //variable that counts the total rotation during a given rotation of the wheel by the user (from ACTION_DOWN to ACTION_UP)
     private int divCount;                          //no of divisions in the wheel
     private int divAngle;                          //angle of each division
@@ -88,12 +87,14 @@ public class WheelMenu extends ImageView {
     
     /**
      * Set how offset from the center the position of the selected div is.
+     * Should be set after setDivCount
      * 
      * @param angleOffset
      */
     public void setAngleOffset(int angleOffset){
     	this.angleOffset = angleOffset;
     	top += Math.floor(angleOffset / divAngle);
+    	selectedPosition = top+1;
     }
 
     /**
@@ -226,7 +227,6 @@ public class WheelMenu extends ImageView {
 
                     //calculate the no of divs the rotation has crossed
                     int no_of_divs_crossed = (int) ((totalRotation) / divAngle);
-                    
                     
                     //calculate current top
                     top = (divCount + top - no_of_divs_crossed) % divCount;
