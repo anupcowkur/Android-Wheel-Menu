@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,7 +34,7 @@ public class WheelMenu extends ImageView {
     private void init(Context context) {
         this.context = context;
         this.setScaleType(ScaleType.MATRIX);
-        selectedPosition = 1;
+        selectedPosition = 0;
 
         // initialize the matrix only once
         if (matrix == null) {
@@ -94,7 +95,8 @@ public class WheelMenu extends ImageView {
     public void setAngleOffset(int angleOffset){
     	this.angleOffset = angleOffset;
     	top += Math.floor(angleOffset / divAngle);
-    	selectedPosition = top+1;
+    	
+    	selectedPosition = top;
     }
 
     /**
@@ -248,9 +250,9 @@ public class WheelMenu extends ImageView {
 
                     //set the currently selected option
                     if (top == 0) {
-                        selectedPosition = divCount;
+                        selectedPosition = divCount-1;//loop around the array
                     } else {
-                        selectedPosition = top;
+                        selectedPosition = top-1;
                     }
 
                     if (wheelChangeListener != null) {
