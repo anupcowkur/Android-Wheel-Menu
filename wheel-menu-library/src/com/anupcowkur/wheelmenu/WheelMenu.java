@@ -14,12 +14,13 @@ public class WheelMenu extends ImageView {
     private Bitmap imageOriginal, imageScaled;     //variables for original and re-sized image
     private Matrix matrix;                         //Matrix used to perform rotations
     private int wheelHeight, wheelWidth;           //height and width of the view
-    private int top;                               //the current top of the wheel
+    private int top;                               //the current top of the wheel (calculated in wheel divs)
     private double totalRotation;                  //variable that counts the total rotation during a given rotation of the wheel by the user (from ACTION_DOWN to ACTION_UP)
     private int divCount;                          //no of divisions in the wheel
     private int divAngle;                          //angle of each division
     private int selectedPosition;                  //the section currently selected by the user.
     private boolean snapToCenterFlag = true;       //variable that determines whether to snap the wheel to the center of a div or not
+    private int angleOffset;					   //how offset from the top the position of "selected" is
     private Context context;
     private WheelChangeListener wheelChangeListener;
 
@@ -32,7 +33,7 @@ public class WheelMenu extends ImageView {
     private void init(Context context) {
         this.context = context;
         this.setScaleType(ScaleType.MATRIX);
-        selectedPosition = 1;
+        selectedPosition = 0;
 
         // initialize the matrix only once
         if (matrix == null) {
@@ -43,7 +44,6 @@ public class WheelMenu extends ImageView {
 
         //touch events listener
         this.setOnTouchListener(new WheelTouchListener());
-
     }
 
     /**
@@ -84,6 +84,19 @@ public class WheelMenu extends ImageView {
     public void setSnapToCenterFlag(boolean snapToCenterFlag) {
         this.snapToCenterFlag = snapToCenterFlag;
     }
+    
+    /**
+     * Set how offset from the center the position of the selected div is.
+     * Should be set after setDivCount
+     * 
+     * @param angleOffset
+     */
+    public void setAngleOffset(int angleOffset){
+    	this.angleOffset = angleOffset;
+    	top += Math.floor(angleOffset / divAngle);
+    	
+    	selectedPosition = top;
+    }
 
     /**
      * Set the wheel image.
@@ -102,7 +115,7 @@ public class WheelMenu extends ImageView {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        // method called multiple times but we can initialize just once
+        // method called multiple times but initialized just once
         if (wheelHeight == 0 || wheelWidth == 0) {
             wheelHeight = h;
             wheelWidth = w;
@@ -164,7 +177,6 @@ public class WheelMenu extends ImageView {
 
         //add the rotation to the total rotation
         totalRotation = totalRotation + degrees;
-
     }
 
     /**
@@ -215,8 +227,8 @@ public class WheelMenu extends ImageView {
                     }
 
                     //calculate the no of divs the rotation has crossed
-                    int no_of_divs_crossed = (int) (totalRotation / divAngle);
-
+                    int no_of_divs_crossed = (int) ((totalRotation) / divAngle);
+                    
                     //calculate current top
                     top = (divCount + top - no_of_divs_crossed) % divCount;
 
@@ -237,9 +249,9 @@ public class WheelMenu extends ImageView {
 
                     //set the currently selected option
                     if (top == 0) {
-                        selectedPosition = divCount;
+                        selectedPosition = divCount-1;//loop around the array
                     } else {
-                        selectedPosition = top;
+                        selectedPosition = top-1;
                     }
 
                     if (wheelChangeListener != null) {
