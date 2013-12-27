@@ -6,7 +6,7 @@ This is a simple android library to make a circular menu UI. Just specify a coup
 
 # Usage
 
-First [download the jar](https://www.dropbox.com/s/6qsib5ktc1th9gq/wheel-menu-library.jar) and add it to your project. The exact instructions to include the jar will depend on your specific development environment, IDE etc. You can also add [wheel-menu-library](https://github.com/anupcowkur/Android-Wheel-Menu/tree/master/wheel-menu-library) as a [library project](https://developer.android.com/tools/projects/index.html#LibraryProjects) and reference it directly without adding the jar.
+First [download the jar](https://github.com/anupcowkur/Android-Wheel-Menu/releases/download/v1.0/wheel-menu-library.jar) and add it to your project. The exact instructions to include the jar will depend on your specific development environment, IDE etc. You can also add [wheel-menu-library](https://github.com/anupcowkur/Android-Wheel-Menu/tree/master/wheel-menu-library) as a [library project](https://developer.android.com/tools/projects/index.html#LibraryProjects) and reference it directly without adding the jar.
 
 
 Include wheel menu in your layout:
