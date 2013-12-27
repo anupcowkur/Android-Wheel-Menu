@@ -14,13 +14,17 @@ public class WheelMenu extends ImageView {
     private Bitmap imageOriginal, imageScaled;     //variables for original and re-sized image
     private Matrix matrix;                         //Matrix used to perform rotations
     private int wheelHeight, wheelWidth;           //height and width of the view
-    private int top;                               //the current top of the wheel (calculated in wheel divs)
-    private double totalRotation;                  //variable that counts the total rotation during a given rotation of the wheel by the user (from ACTION_DOWN to ACTION_UP)
+    private int top;                               //the current top of the wheel (calculated in
+    // wheel divs)
+    private double totalRotation;                  //variable that counts the total rotation
+    // during a given rotation of the wheel by the user (from ACTION_DOWN to ACTION_UP)
     private int divCount;                          //no of divisions in the wheel
     private int divAngle;                          //angle of each division
     private int selectedPosition;                  //the section currently selected by the user.
-    private boolean snapToCenterFlag = true;       //variable that determines whether to snap the wheel to the center of a div or not
-    private int angleOffset;					   //how offset from the top the position of "selected" is
+    private boolean snapToCenterFlag = true;       //variable that determines whether to snap the
+    // wheel to the center of a div or not
+    private int angleOffset;                       //how offset from the top the position of
+    // "selected" is
     private Context context;
     private WheelChangeListener wheelChangeListener;
 
@@ -84,18 +88,18 @@ public class WheelMenu extends ImageView {
     public void setSnapToCenterFlag(boolean snapToCenterFlag) {
         this.snapToCenterFlag = snapToCenterFlag;
     }
-    
+
     /**
      * Set how offset from the center the position of the selected div is.
      * Should be set after setDivCount
-     * 
+     *
      * @param angleOffset
      */
-    public void setAngleOffset(int angleOffset){
-    	this.angleOffset = angleOffset;
-    	top += Math.floor(angleOffset / divAngle);
-    	
-    	selectedPosition = top;
+    public void setAngleOffset(int angleOffset) {
+        this.angleOffset = angleOffset;
+        top += Math.floor(angleOffset / divAngle);
+
+        selectedPosition = top;
     }
 
     /**
@@ -108,7 +112,8 @@ public class WheelMenu extends ImageView {
     }
 
     /*
-     * We need this to get the dimensions of the view. Once we get those, We can scale the image to make sure it's proper,
+     * We need this to get the dimensions of the view. Once we get those,
+     * We can scale the image to make sure it's proper,
      * Initialize the matrix and align it with the views center.
      */
     @Override
@@ -121,8 +126,11 @@ public class WheelMenu extends ImageView {
             wheelWidth = w;
             // resize the image
             Matrix resize = new Matrix();
-            resize.postScale((float) Math.min(wheelWidth, wheelHeight) / (float) imageOriginal.getWidth(), (float) Math.min(wheelWidth, wheelHeight) / (float) imageOriginal.getHeight());
-            imageScaled = Bitmap.createBitmap(imageOriginal, 0, 0, imageOriginal.getWidth(), imageOriginal.getHeight(), resize, false);
+            resize.postScale((float) Math.min(wheelWidth, wheelHeight) / (float) imageOriginal
+                    .getWidth(), (float) Math.min(wheelWidth,
+                    wheelHeight) / (float) imageOriginal.getHeight());
+            imageScaled = Bitmap.createBitmap(imageOriginal, 0, 0, imageOriginal.getWidth(),
+                    imageOriginal.getHeight(), resize, false);
             // translate the matrix to the image view's center
             float translateX = wheelWidth / 2 - imageScaled.getWidth() / 2;
             float translateY = wheelHeight / 2 - imageScaled.getHeight() / 2;
@@ -228,11 +236,12 @@ public class WheelMenu extends ImageView {
 
                     //calculate the no of divs the rotation has crossed
                     int no_of_divs_crossed = (int) ((totalRotation) / divAngle);
-                    
+
                     //calculate current top
                     top = (divCount + top - no_of_divs_crossed) % divCount;
 
-                    //for next rotation, the initial total rotation will be the no of degrees inside the current top
+                    //for next rotation, the initial total rotation will be the no of degrees
+                    // inside the current top
                     totalRotation = totalRotation % divAngle;
 
                     //snapping to the top's center
@@ -249,9 +258,9 @@ public class WheelMenu extends ImageView {
 
                     //set the currently selected option
                     if (top == 0) {
-                        selectedPosition = divCount-1;//loop around the array
+                        selectedPosition = divCount - 1;//loop around the array
                     } else {
-                        selectedPosition = top-1;
+                        selectedPosition = top - 1;
                     }
 
                     if (wheelChangeListener != null) {
