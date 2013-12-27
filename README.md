@@ -50,6 +50,8 @@ public void onSelectionChange(int selectedPosition) {
 });
 ```
 
+wheel positions will start from 0.
+
 ####snap-to-center
 
 This flag is set to true by default. If true, crossing into a division will cause the wheel to auto-align itself to the center of the division. Otherwise, the wheel will just hang around wherever the user left it. You can change it by calling:
