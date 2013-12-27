@@ -22,12 +22,12 @@ public class MainActivity extends Activity {
         wheelMenu.setWheelImage(R.drawable.wheel);
 
         selectedPositionText = (TextView) findViewById(R.id.selected_position_text);
-        selectedPositionText.setText("selected: " + wheelMenu.getSelectedPosition());
+        selectedPositionText.setText("selected: " + (wheelMenu.getSelectedPosition() + 1));
 
         wheelMenu.setWheelChangeListener(new WheelMenu.WheelChangeListener() {
             @Override
             public void onSelectionChange(int selectedPosition) {
-                selectedPositionText.setText("selected: " + selectedPosition);
+                selectedPositionText.setText("selected: " + (selectedPosition + 1));
             }
         });
 
