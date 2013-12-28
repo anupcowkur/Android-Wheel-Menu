@@ -60,6 +60,20 @@ This flag is set to true by default. If true, crossing into a division will caus
 wheelMenu.setSnapToCenterFlag(false)
 ```
 
+####Changing the top position
+
+You can also make any arbitrary div in the wheel to be the "top" postion by calling
+
+```
+wheelMenu.setAlternateTopDiv(int);
+```
+
+For instance, if you call ```wheelMenu.setAlternateTopDiv(6)``` then the sixth div will now be considered as the "top" and all calculations from that point on will reflect this. This can be useful in situations such as when you want the bottom div or right div of the wheel to be the selected position.
+
+A caveat with this is that you have to call this method after the call to ```setDivCount(int)``` . If you call it before, then your new top position will be ignored and the top will still be 0.
+
+# Sample
+
 Check out the [sample application](https://github.com/anupcowkur/Android-Wheel-Menu/tree/master/wheel-menu-sample) to see it in action!
 
 # Contributing
