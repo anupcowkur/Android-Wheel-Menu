@@ -17,14 +17,13 @@ public class WheelMenu extends ImageView {
     private int top;                               //the current top of the wheel (calculated in
     // wheel divs)
     private double totalRotation;                  //variable that counts the total rotation
-    // during a given rotation of the wheel by the user (from ACTION_DOWN to ACTION_UP)
+    // during a given rotation of the wheel by the
+    // user (from ACTION_DOWN to ACTION_UP)
     private int divCount;                          //no of divisions in the wheel
     private int divAngle;                          //angle of each division
     private int selectedPosition;                  //the section currently selected by the user.
     private boolean snapToCenterFlag = true;       //variable that determines whether to snap the
     // wheel to the center of a div or not
-    private int angleOffset;                       //how offset from the top the position of
-    // "selected" is
     private Context context;
     private WheelChangeListener wheelChangeListener;
 
@@ -90,14 +89,19 @@ public class WheelMenu extends ImageView {
     }
 
     /**
-     * Set how offset from the center the position of the selected div is.
-     * Should be set after setDivCount
+     * Set a different top position. Default top position is 0.
+     * Should be set after {#setDivCount(int) setDivCount} method and the value should be greater
+     * than 0 and lesser
+     * than divCount, otherwise the provided value will be ignored.
      *
-     * @param angleOffset
+     * @param newTopDiv
      */
-    public void setAngleOffset(int angleOffset) {
-        this.angleOffset = angleOffset;
-        top += Math.floor(angleOffset / divAngle);
+    public void setAlternateTopDiv(int newTopDiv) {
+
+        if (newTopDiv < 0 || newTopDiv >= divCount)
+            return;
+        else
+            top = newTopDiv;
 
         selectedPosition = top;
     }
