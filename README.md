@@ -9,7 +9,7 @@ First [download the jar](https://github.com/anupcowkur/Android-Wheel-Menu/releas
 
 Include wheel menu in your layout:
 
-```
+```xml
 <com.anupcowkur.wheelmenu.WheelMenu
 android:id="@+id/wheelMenu"
 android:layout_width="300dp"
@@ -18,7 +18,7 @@ android:layout_height="300dp" />
 
 Initialize the wheel menu in your activity:
 
-```
+```java
 wheelMenu = (WheelMenu) findViewById(R.id.wheelMenu);
 
 //set the no of divisions in the wheel, default is 1
@@ -33,13 +33,13 @@ That's it!
 
 Now, to get the currently selected position simply call:
 
-```
+```java
 wheelMenu.getSelectedPosition();
 ```
 
 or, you can set a listener to monitor change events like so:
 
-```
+```java
 wheelMenu.setWheelChangeListener(new WheelMenu.WheelChangeListener() {
 @Override
 public void onSelectionChange(int selectedPosition) {
@@ -54,7 +54,7 @@ wheel positions will start from 0.
 
 This flag is set to true by default. If true, crossing into a division will cause the wheel to auto-align itself to the center of the division. Otherwise, the wheel will just hang around wherever the user left it. You can change it by calling:
 
-```
+```java
 wheelMenu.setSnapToCenterFlag(false)
 ```
 
@@ -62,7 +62,7 @@ wheelMenu.setSnapToCenterFlag(false)
 
 You can also make any arbitrary div in the wheel to be the "top" postion by calling
 
-```
+```java
 wheelMenu.setAlternateTopDiv(int);
 ```
 
