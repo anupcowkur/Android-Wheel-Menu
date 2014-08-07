@@ -48,6 +48,16 @@ public void onSelectionChange(int selectedPosition) {
 });
 ```
 
+or, you can set a listener to monitor click events like so:
+
+```java
+wheelMenu.setWheelClickListener(new WheelMenu.WheelSelectedListener() {
+@Override
+public void onClickListener(int selectedPosition) {
+      //do your thing
+    }
+});
+
 wheel positions will start from 0.
 
 ####snap-to-center
