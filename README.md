@@ -1,3 +1,6 @@
+# Deprecated
+This library is no longer maintained. It will work fine but no new issuse, features etc will be accepted. You can still use the source as reference to make your own custom views.
+
 # Android Wheel Menu
 
 ![Example Image](https://raw.github.com/anupcowkur/Android-Wheel-Menu/master/graphics/wheel.gif)
