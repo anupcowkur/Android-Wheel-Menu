@@ -53,7 +53,7 @@ public void onSelectionChange(int selectedPosition) {
 
 wheel positions will start from 0.
 
-####snap-to-center
+#### snap-to-center
 
 This flag is set to true by default. If true, crossing into a division will cause the wheel to auto-align itself to the center of the division. Otherwise, the wheel will just hang around wherever the user left it. You can change it by calling:
 
@@ -61,7 +61,7 @@ This flag is set to true by default. If true, crossing into a division will caus
 wheelMenu.setSnapToCenterFlag(false)
 ```
 
-####Changing the top position
+#### Changing the top position
 
 You can also make any arbitrary div in the wheel to be the "top" postion by calling
 
